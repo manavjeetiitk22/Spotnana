@@ -10,6 +10,12 @@ class Flight(BaseModel):
     price: float
     aircraft: str
 
+class Layover(BaseModel):
+    airport: str
+    duration_minutes: int
+    duration_human: str
+
 class Itinerary(BaseModel):
     flights: List[Flight]
+    layovers: List[Layover]
     total_price: float

@@ -35,21 +35,44 @@ function renderResults(itineraries) {
         const div = document.createElement("div");
         div.className = "itinerary";
 
-        let html = `<h3>Itinerary ${idx + 1}</h3>`;
-        html += `<p>Total Price: $${itinerary.total_price}</p>`;
+        const flights = itinerary.flights;
 
-        html += "<ul>";
-        itinerary.flights.forEach(f => {
-            html += `
-                <li>
-                    ${f.flightNumber}: ${f.origin} → ${f.destination}<br>
-                    ${f.departureTime} → ${f.arrivalTime}
-                </li>
-            `;
+        // ---- Route ----
+        const route =
+            flights.map(f => f.origin).join(" → ") +
+            " → " +
+            flights[flights.length - 1].destination;
+
+        // ---- Total travel time ----
+        const start = new Date(flights[0].departureTime);
+        const end = new Date(flights[flights.length - 1].arrivalTime);
+        const totalMinutes = Math.floor((end - start) / 60000);
+
+        const totalHours = Math.floor(totalMinutes / 60);
+        const totalMins = totalMinutes % 60;
+
+        let html = `
+            <h3>Itinerary ${idx + 1} (${flights.length - 1} stops)</h3>
+            <p><strong>Route:</strong> ${route}</p>
+            <p><strong>Total travel time:</strong> ${totalHours}h ${totalMins}m</p>
+            <pre>
+        `;
+
+        flights.forEach((flight, i) => {
+            html += `${flight.flightNumber} | ${flight.origin} → ${flight.destination} | $${flight.price}\n`;
+            html += `  ${flight.departureTime} → ${flight.arrivalTime}\n`;
+
+            if (itinerary.layovers && i < itinerary.layovers.length) {
+                const layover = itinerary.layovers[i];
+                html += `  Layover at ${layover.airport}: ${layover.duration_human}\n`;
+            }
         });
-        html += "</ul>";
+
+        html += `\nTotal price: $${itinerary.total_price}`;
+        html += `</pre>`;
 
         div.innerHTML = html;
         resultsDiv.appendChild(div);
     });
 }
+

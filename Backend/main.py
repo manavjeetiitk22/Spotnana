@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .data_loader import load_airports, load_flights
-from .time_utils import to_utc
+from .time_utils import to_utc,format_layover
 from .search import dfs, createAdjacencyList
 from typing import List
 from .schema import Flight, Itinerary
@@ -48,18 +48,39 @@ def search_flights(origin: str, destination: str, date: str):
 
     response = []
     for path in results:
-        flight_objs = [
-            Flight(
-                flightNumber=f["flightNumber"],
-                origin=f["origin"],
-                destination=f["destination"],
-                departureTime=f["departureTime"],
-                arrivalTime=f["arrivalTime"],
-                price=float(f["price"]),
-                aircraft=f["aircraft"]
+        flight_objs = []
+        layovers = []
+
+        for i, f in enumerate(path):
+            flight_objs.append(
+                Flight(
+                    flightNumber=f["flightNumber"],
+                    origin=f["origin"],
+                    destination=f["destination"],
+                    departureTime=f["departureTime"],
+                    arrivalTime=f["arrivalTime"],
+                    price=float(f["price"]),
+                    aircraft=f["aircraft"]
+                )
             )
-            for f in path
-        ]
-        response.append(Itinerary(flights=flight_objs, total_price=sum(f.price for f in flight_objs)))
+
+            # Add layover after this flight (if not last)
+            if i < len(path) - 1:
+                layover_td = path[i + 1]["departure_utc"] - f["arrival_utc"]
+                minutes = int(layover_td.total_seconds() // 60)
+
+                layovers.append({
+                    "airport": f["destination"],
+                    "duration_minutes": minutes,
+                    "duration_human": format_layover(layover_td)
+                })
+
+        response.append(
+            Itinerary(
+                flights=flight_objs,
+                layovers=layovers,
+                total_price=sum(f.price for f in flight_objs)
+            )
+        )
 
     return response
