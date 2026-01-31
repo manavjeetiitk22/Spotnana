@@ -208,5 +208,6 @@ def print_itineraries(itineraries):
         print(f"Total price: ${total_price}")
         print("-" * 50)
 
-results = search_itineraries("JFK", "LAX", "2024-03-15")
+results = search_itineraries("SFO", "NRT", "2024-03-15")
 print_itineraries(results)
+print(len(results))

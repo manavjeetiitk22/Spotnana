@@ -1,6 +1,6 @@
 from collections import defaultdict
 from .layover import valid_layover
-from .time_utils import local_date_from_utc
+from zoneinfo import ZoneInfo
 
 def createAdjacencyList(flights_data):
     flights_from = defaultdict(list)
@@ -29,9 +29,13 @@ def dfs(
 
         # Date filter: first flight must depart on requested date
         if not path:
-            local_date = local_date_from_utc(
-                flight["departure_utc"],
-                airports_by_code[flight["origin"]]["timezone"]
+            local_date = (
+                flight["departure_utc"]
+                .astimezone(
+                    ZoneInfo(airports_by_code[flight["origin"]]["timezone"])
+                )
+                .date()
+                .isoformat()
             )
             if local_date != search_date:
                 continue

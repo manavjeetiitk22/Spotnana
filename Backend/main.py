@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .data_loader import load_airports, load_flights
 from .time_utils import to_utc
 from .search import dfs, createAdjacencyList
@@ -6,6 +7,14 @@ from typing import List
 from .schema import Flight, Itinerary
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # data = load_data()
 airports_by_code = load_airports()
