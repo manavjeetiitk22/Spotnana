@@ -138,12 +138,6 @@ def dfs(current_airport, destination, path, used_flights, results, search_date="
         path.pop()
         used_flights.remove(flight["flightNumber"])
 
-def total_duration(path):
-    return path[-1]["arrival_utc"] - path[0]["departure_utc"]
-
-def total_price(path):
-    return sum(f["price"] for f in path)
-
 def search_itineraries(source, destination, date):
     if source not in airports_by_code or destination not in airports_by_code:
         print('Invalid source or destination airport code.')

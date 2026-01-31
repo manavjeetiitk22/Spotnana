@@ -1,0 +1,56 @@
+from fastapi import FastAPI
+from .data_loader import load_airports, load_flights
+from .time_utils import to_utc
+from .search import dfs, createAdjacencyList
+from typing import List
+from .schema import Flight, Itinerary
+
+app = FastAPI()
+
+# data = load_data()
+airports_by_code = load_airports()
+flights_data = load_flights()
+
+for f in flights_data:
+    f["departure_utc"] = to_utc(
+        f["departureTime"],
+        airports_by_code[f["origin"]]["timezone"]
+    )
+    f["arrival_utc"] = to_utc(
+        f["arrivalTime"],
+        airports_by_code[f["destination"]]["timezone"]
+    )
+
+adjacency_list = createAdjacencyList(flights_data)
+
+@app.get("/search", response_model=List[Itinerary])
+def search_flights(origin: str, destination: str, date: str):
+    results = []
+    dfs(
+        origin,
+        destination,
+        [],
+        set(),
+        results,
+        date,
+        airports_by_code,
+        adjacency_list
+    )
+
+    response = []
+    for path in results:
+        flight_objs = [
+            Flight(
+                flightNumber=f["flightNumber"],
+                origin=f["origin"],
+                destination=f["destination"],
+                departureTime=f["departureTime"],
+                arrivalTime=f["arrivalTime"],
+                price=float(f["price"]),
+                aircraft=f["aircraft"]
+            )
+            for f in path
+        ]
+        response.append(Itinerary(flights=flight_objs, total_price=sum(f.price for f in flight_objs)))
+
+    return response
