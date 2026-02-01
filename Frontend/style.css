@@ -1,14 +1,92 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #4e342e;
+    padding: 30px;
+}
+
+/* Page title */
+h1 {
+    color: #e65100;
+    margin-bottom: 20px;
+}
+
+/* Search form */
+form {
+    background: #fff8f1;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
 form label {
     margin-right: 15px;
+    font-weight: 600;
 }
 
-.itinerary {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+form input {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ffcc80;
+    margin-left: 5px;
 }
+
+form button {
+    background: #ff8f00;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+form button:hover {
+    background: #ef6c00;
+}
+
+/* Itinerary cards */
+.itinerary {
+    background: #ffffff;
+    border-left: 6px solid #ff8f00;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.itinerary h3 {
+    margin-top: 0;
+    color: #e65100;
+}
+
+/* Flight list */
+.itinerary ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.itinerary li {
+    padding: 10px 0;
+    border-bottom: 1px dashed #ffcc80;
+}
+
+.itinerary li:last-child {
+    border-bottom: none;
+}
+
+/* Layover info */
+.layover {
+    margin-left: 15px;
+    color: #6d4c41;
+    font-size: 0.9em;
+}
+
+/* Price & duration highlight */
+.total {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #bf360c;
+}
+
