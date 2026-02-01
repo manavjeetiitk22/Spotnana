@@ -67,7 +67,7 @@ function renderResults(itineraries) {
         const totalMins = totalMinutes % 60;
 
         let html = `
-            <h3>Itinerary ${idx + 1} (${flights.length - 1} stops)</h3>
+            <h3>Itinerary ${idx + 1}</h3>
             <p><strong>Route:</strong> ${route}</p>
             <p><strong>Total travel time:</strong> ${totalHours}h ${totalMins}m</p>
             <pre>
