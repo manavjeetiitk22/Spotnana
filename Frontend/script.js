@@ -36,6 +36,16 @@ function renderResults(itineraries) {
 
     resultsDiv.innerHTML = "";
 
+    itineraries.sort((a, b) => {
+        const aStart = new Date(a.flights[0].departureTime);
+        const aEnd = new Date(a.flights[a.flights.length - 1].arrivalTime);
+
+        const bStart = new Date(b.flights[0].departureTime);
+        const bEnd = new Date(b.flights[b.flights.length - 1].arrivalTime);
+
+        return (aEnd - aStart) - (bEnd - bStart);
+    });
+
     itineraries.forEach((itinerary, idx) => {
         const div = document.createElement("div");
         div.className = "itinerary";
