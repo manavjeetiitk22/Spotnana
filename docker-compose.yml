@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: .           # root context so flights.json is visible
+      dockerfile: Backend/Dockerfile
+    container_name: spotnana-backend
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: .           # root context so Frontend/ is visible
+      dockerfile: Frontend/Dockerfile
+    container_name: spotnana-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend

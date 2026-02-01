@@ -1,6 +1,11 @@
 const form = document.getElementById("searchForm");
 const resultsDiv = document.getElementById("results");
 
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:8000"
+    : "http://backend:8000";
+
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -12,7 +17,7 @@ form.addEventListener("submit", async (e) => {
 
     try {
         const response = await fetch(
-            `http://127.0.0.1:8000/search?origin=${origin}&destination=${destination}&date=${date}`
+            `${API_BASE}/search?origin=${origin}&destination=${destination}&date=${date}`
         );
 
         const data = await response.json();

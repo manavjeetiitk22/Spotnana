@@ -1,5 +1,5 @@
 from collections import defaultdict
-from .layover import valid_layover
+from layover import valid_layover
 from zoneinfo import ZoneInfo
 
 def createAdjacencyList(flights_data):

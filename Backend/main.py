@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .data_loader import load_airports, load_flights
-from .time_utils import to_utc,format_layover
-from .search import dfs, createAdjacencyList
 from typing import List
-from .schema import Flight, Itinerary
+from data_loader import load_airports, load_flights
+from time_utils import to_utc,format_layover
+from search import dfs, createAdjacencyList
+from schema import Flight, Itinerary
 
 app = FastAPI()
 
