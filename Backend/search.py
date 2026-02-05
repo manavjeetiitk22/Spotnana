@@ -19,6 +19,9 @@ def dfs(
     airports_by_code,
     adjacency_list
 ):
+    if len(path) >= 3:
+        return
+
     if current_airport == destination:
         results.append(list(path))
         return
