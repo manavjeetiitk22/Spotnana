@@ -17,8 +17,8 @@ app.add_middleware(
 )
 
 # data = load_data()
-airports_by_code = load_airports('/Users/manavjeetsingh/Desktop/Spotnana/flights.json')
-flights_data = load_flights('/Users/manavjeetsingh/Desktop/Spotnana/flights.json')
+airports_by_code = load_airports('./flights.json')
+flights_data = load_flights('./flights.json')
 
 for f in flights_data:
     f["departure_utc"] = to_utc(
